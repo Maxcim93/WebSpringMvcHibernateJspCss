@@ -1,0 +1,54 @@
+h1 {
+   text-align: center;
+   background-color: #4CAF50;
+   color: white;
+}
+
+div.base{
+    background-color: #C6F684;
+}
+
+div.center{
+    text-align: center;
+    margin: auto;
+    width: 70%;
+}
+
+table{
+    margin: auto;
+    width: 100%;
+    border-collapse: separate;
+}
+
+td{
+    background-color: #AEF9B4;
+    font-style: italic;
+}
+
+th{
+   background-color: #7CF886;
+   color: black;
+}
+
+form{
+    text-align: center;
+    margin: auto;
+    width: 60%;
+}
+
+input[type=button], input[type=submit], input[type=reset] {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 50px;
+    margin: 10px 10px 10px 10px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+input[type=text] {
+     width: 100%;
+     padding: 10px 20px;
+     box-sizing: border-box;
+}
+
