@@ -2,11 +2,12 @@ package com.maxim.web.storages;
 
 import com.maxim.model.User;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.Collection;
 
 /**
@@ -14,71 +15,37 @@ import java.util.Collection;
  */
 @Repository
 public class HibernateUserStorage implements Storage<User> {
+    private final HibernateTemplate template;
 
-    private final SessionFactory factory;
-
-    public HibernateUserStorage() {
-        factory = new Configuration().configure().buildSessionFactory();
+    @Autowired
+    public HibernateUserStorage(HibernateTemplate template) {
+        this.template = template;
     }
 
     public Collection<User> values(){
-        final Session session = factory.openSession();
-        Transaction tx = session.beginTransaction();
-        try {
-            return session.createQuery("from User").list();
-        } finally {
-            tx.commit();
-            session.close();
-        }
+        return (Collection<User>)template.find("from User");
     }
 
+    @Transactional
     public int add(final User user){
-        final Session session = factory.openSession();
-        Transaction tx = session.beginTransaction();
-        try {
-            return (Integer)session.save(user);
-        } finally {
-            tx.commit();
-            session.close();
-        }
+        return (Integer)template.save(user);
     }
 
+    @Transactional
     public void edit(final User user){
-        final Session session = factory.openSession();
-        Transaction tx = session.beginTransaction();
-        try {
-            session.update(user);
-        } finally {
-            tx.commit();
-            session.close();
-        }
+        template.update(user);
     }
 
+    @Transactional
     public void delete(final int id){
-        final Session session = factory.openSession();
-        Transaction tx = session.beginTransaction();
-        try {
-            User userForDelete=new User();
-            userForDelete.setId(id);
-            session.delete(userForDelete);
-        } finally {
-            tx.commit();
-            session.close();
-        }
+        User userForDelete=new User();
+        userForDelete.setId(id);
+        template.delete(userForDelete);
     }
 
     public User get(final int id){
-        final Session session = factory.openSession();
-        Transaction tx = session.beginTransaction();
-        try {
-            return (User) session.get(User.class, id);
-        } finally {
-            tx.commit();
-            session.close();
-        }
+        return (User) template.get(User.class, id);
     }
 
-    public void close(){
-        this.factory.close();
-    }
+    public void close(){ throw new UnsupportedOperationException(); }
 }
