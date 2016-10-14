@@ -58,6 +58,5 @@ public class UsersManagerTest {
 
         //удаление созданного пользователя из бд
         usersStorage.delete(idNewUser);
-        //usersStorage.close();
     }
 }
