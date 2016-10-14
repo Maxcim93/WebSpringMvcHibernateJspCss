@@ -12,7 +12,7 @@
 
     <context:component-scan base-package="com.maxim.web" />
 
-    <bean class="org.springfiramework.web.servlet.view.InternalResourceViewResolver">
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/" />
         <property name="suffix" value=".jsp" />
     </bean>

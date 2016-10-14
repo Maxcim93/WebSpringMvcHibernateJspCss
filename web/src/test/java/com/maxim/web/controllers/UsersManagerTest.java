@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Date;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -22,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration("classpath:test-spring-context.xml")
+@ContextConfiguration("classpath:spring-context.xml")
 public class UsersManagerTest {
 
     @Autowired
@@ -40,7 +42,22 @@ public class UsersManagerTest {
 
     @Test
     public void testMethod() throws Exception {
-        this.mockMvc.perform(get("/manager/users").accept(MediaType.parseMediaType("application/xml;charset=UTF-8")))
-                .andExpect(status().isOk());
+        //создание новго пользователя
+        User newUser=new User();
+        newUser.setName("NewUserName");
+        newUser.setSurname("SernameNewUser");
+        newUser.setBirthday(new Date(87678));
+        int idNewUser=usersStorage.add(newUser);
+
+        //получение пользователя от сервелета и проверка с
+        //ранее созданным
+        this.mockMvc.perform(get("/manager/users/user/id="+idNewUser).accept(MediaType.parseMediaType("application/xml;charset=UTF-8")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("user-view"))
+                .andExpect(model().attribute("user",newUser));
+
+        //удаление созданного пользователя из бд
+        usersStorage.delete(idNewUser);
+        usersStorage.close();
     }
 }

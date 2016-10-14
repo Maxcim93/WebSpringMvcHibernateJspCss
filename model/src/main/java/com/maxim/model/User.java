@@ -34,4 +34,11 @@ public class User {
     public String getPassword(){return this.password;}
     public String getAbout(){return this.about;}
     public String getAddress(){return this.address;}
+
+    @Override
+    public boolean equals(Object obj){
+        if(((User)obj).getId()!=this.id)
+            return false;
+        return true;
+    }
 }
