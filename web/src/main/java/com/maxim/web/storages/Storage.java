@@ -15,7 +15,9 @@ public interface Storage<T> {
 
     public void delete(final int id);
 
-    public T get(final int id);
+    public T getById(final int id);
+
+    public T getByLogin(String login);
 
     public void close();
 }

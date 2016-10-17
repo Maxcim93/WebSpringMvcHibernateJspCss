@@ -4,6 +4,8 @@ import com.maxim.model.User;
 import com.maxim.web.storages.Storage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
@@ -38,10 +40,14 @@ public class UsersManager {
         return "allusers-view";
     }
 
-    @RequestMapping(value = "/users/user/{userId}", method = RequestMethod.GET)
-    public String getUser(@PathVariable String userId, ModelMap modelMap){
-        int idUser=Integer.parseInt(userId.split("=")[1]);
-        User userFromStorage=usersStorage.get(idUser);
+    @RequestMapping(value = "/users/user", method = RequestMethod.GET)
+    public String getUser(ModelMap modelMap){
+        /*int idUser=Integer.parseInt(userId.split("=")[1]);
+        User userFromStorage=usersStorage.getById(idUser);*/
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User userFromStorage=
+                usersStorage.getByLogin(auth.getName());
         modelMap.addAttribute("user", userFromStorage);
         return "user-view";
     }
@@ -61,7 +67,7 @@ public class UsersManager {
     @RequestMapping(value = "/users/edit/{userId}", method = RequestMethod.GET)
     public String getEditUserPage(@PathVariable String userId,ModelMap modelMap){
         int idUser=Integer.parseInt(userId.split("=")[1]);
-        User userFromStorage=usersStorage.get(idUser);
+        User userFromStorage=usersStorage.getById(idUser);
         modelMap.addAttribute("user", userFromStorage);
         return "edit-user";
     }

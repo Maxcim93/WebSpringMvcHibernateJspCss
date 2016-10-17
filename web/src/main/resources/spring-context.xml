@@ -4,8 +4,7 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
-   http://www.springframework.org/schema/beans
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
    http://www.springframework.org/schema/mvc
    http://www.springframework.org/schema/mvc/spring-mvc.xsd
@@ -16,13 +15,16 @@
    http://www.springframework.org/schema/aop
    http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 
+    <!-- mvc config-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/" />
         <property name="suffix" value=".jsp" />
     </bean>
 
     <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:annotation-driven/>
 
+    <!--hibernate template config-->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="configLocation">
             <value>classpath:hibernate.cfg.xml</value>
@@ -37,8 +39,10 @@
           class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!--base config-->
     <context:annotation-config/>
     <context:component-scan base-package="com.maxim.web" />
-    <tx:annotation-driven transaction-manager="transactionManager"/>
-    <mvc:annotation-driven/>
 </beans>

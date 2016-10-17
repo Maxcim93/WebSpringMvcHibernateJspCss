@@ -1,8 +1,6 @@
 package com.maxim.web.storages;
 
 import com.maxim.model.User;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -43,8 +41,13 @@ public class HibernateUserStorage implements Storage<User> {
         template.delete(userForDelete);
     }
 
-    public User get(final int id){
+    public User getById(final int id){
         return (User) template.get(User.class, id);
+    }
+
+    public User getByLogin(final String login){
+        return (User)template.find(
+                "select user from User user where user.login like ?",login).get(0);
     }
 
     public void close(){ throw new UnsupportedOperationException(); }

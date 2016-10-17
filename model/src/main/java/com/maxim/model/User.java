@@ -12,6 +12,7 @@ public class User {
     private Date birthday;
     private String login;
     private String password;
+    private String role;
     private String about;
     private String address;
 
@@ -23,6 +24,7 @@ public class User {
     public void setBirthday(Date birthday){this.birthday=birthday;}
     public void setLogin(String login){this.login=login;}
     public void setPassword(String password){this.password=password;}
+    public void setRole(String role){this.role=role;}
     public void setAbout(String about){this.about=about;}
     public void setAddress(String address){this.address=address;}
 
@@ -32,6 +34,7 @@ public class User {
     public Date getBirthday(){return this.birthday;}
     public String getLogin(){return this.login;}
     public String getPassword(){return this.password;}
+    public String getRole(){return this.role;}
     public String getAbout(){return this.about;}
     public String getAddress(){return this.address;}
 
